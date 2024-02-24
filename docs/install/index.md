@@ -26,3 +26,74 @@ Content contained on external links is not managed or maintained by the Actual B
 
 - [Synology NAS](https://mariushosting.com/how-to-install-actual-on-your-synology-nas/)
 - [Home Assistant](https://github.com/sztupy/hassio-actualbudget/blob/main/README.md)
+- **Proxmox**
+1. Download CT Template
+   >"Debian-**-turnkey-nodejs".
+   
+2. Create Container
+   >"Create CT".
+   > * **Name:** Actual
+   > * **Password:** Your Password for container
+   > * **Template:** Debian-**-turnkey-nodejs
+   > * **Disk Size:** 8GB
+   > * **CPU:** 2 Cores
+   > * **Memory:** 1024Mb
+   
+3. Start the Container, and navigate to the Console. Run through the guided setup & accept reboot at the end.
+
+4. Once rebooted, login as root and use the password created.
+
+*Steps as followed from [Local Installation section](docs/install/local)*
+
+5. Install Yarn 
+   ```js
+   npm install --global yarn
+   ```
+   
+7. Clone the Actual Server from Git
+   ```bash
+   git clone https://github.com/actualbudget/actual-server.git
+   ```
+   
+9. Navigate to the directory cloned
+   ```bash
+   cd actual-server
+   ```
+
+10. Install all the dependencies
+    ```bash
+    yarn install
+    ```
+
+> [!IMPORTANT]
+> 10. Create a SSL Certificate 
+> ```bash
+> openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout selfhost.key -out selfhost.crt
+> ```
+> 
+> 11. Create a Config file to use the certificate created
+> ```bash
+> Nano config.json
+> ```
+> 
+> 12. Inside Nano config file created, note the location of the certificate. Save and then exit nano.
+>    ```json
+>    {
+>      "https": {
+>        "key": "selfhost.key",
+>        "cert": "selfhost.crt"
+>      }
+>    }
+>    ```
+
+13. Start the server with
+    ```js
+    yarn start
+    ```
+
+14. Open a new tab in your browser and enter the IP address on port:5006 
+> [!TIP]
+> Get the IP address in the console before starting the server, if you don't know it.
+> ```bash
+> ifconfig
+> ```
